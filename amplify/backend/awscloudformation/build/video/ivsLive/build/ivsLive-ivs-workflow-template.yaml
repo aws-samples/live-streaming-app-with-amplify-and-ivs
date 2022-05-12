@@ -1,0 +1,76 @@
+Description: >-
+  {"createdOn":"Mac","createdBy":"Amplify","createdWith":"7.6.26","stackType":"video-video","metadata":{}}
+Parameters:
+  env:
+    Type: String
+    Description: The environment name. e.g. Dev, Test, or Production.
+    Default: NONE
+  pS3:
+    Type: String
+    Description: Store template and lambda package
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9-_]*'
+    Default: amplify-ivsbackend-dev-161905-deployment
+  pSourceFolder:
+    Type: String
+    Description: Store template and lambda package
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9-_]*'
+    Default: ivs-helpers
+  pProjectName:
+    Type: String
+    Description: ProjectName
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9-_]*'
+    Default: ivsLive
+  pLatencyMode:
+    Type: String
+    Description: Latency Mode for IVS-Channel
+    Default: NORMAL
+  pQuality:
+    Type: String
+    Description: Quality of channel
+    Default: BASIC
+Conditions:
+  HasEnvironmentParameter:
+    Fn::Not:
+      - Fn::Equals:
+          - Ref: env
+          - NONE
+Resources:
+  rIVSChannel:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL:
+        Fn::Sub: https://s3.amazonaws.com/${pS3}/${pSourceFolder}/IVS-Channel.template
+      Parameters:
+        pProjectName:
+          Fn::If:
+            - HasEnvironmentParameter
+            - Fn::Join:
+                - '-'
+                - - Ref: pProjectName
+                  - Ref: env
+            - Ref: pProjectName
+        pLatencyMode:
+          Ref: pLatencyMode
+        pQuality:
+          Ref: pQuality
+Outputs:
+  oVideoOutput:
+    Value:
+      Fn::GetAtt:
+        - rIVSChannel
+        - Outputs.oVideoOutput
+  oVideoInputURL:
+    Value:
+      Fn::GetAtt:
+        - rIVSChannel
+        - Outputs.oVideoInputURL
+  oVideoInputKey:
+    Value:
+      Fn::GetAtt:
+        - rIVSChannel
+        - Outputs.oVideoInputKey
+  oVideoChannelArn:
+    Value:
+      Fn::GetAtt:
+        - rIVSChannel
+        - Outputs.oVideoChannelArn

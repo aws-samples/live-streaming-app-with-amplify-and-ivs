@@ -1,0 +1,10 @@
+{
+    "shared": {
+        "resourceName": "ivsLive",
+        "bucket": "amplify-ivsbackend-dev-161905-deployment"
+    },
+    "channel": {
+        "channelQuality": "BASIC",
+        "channelLatency": "NORMAL"
+    }
+}

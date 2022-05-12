@@ -1,0 +1,44 @@
+Description: S3 Workflow
+
+Parameters:
+  pProjectName:
+    Type: String
+    Description: ProjectName
+    AllowedPattern: "[a-zA-Z][a-zA-Z0-9-_]*"
+    Default: DefaultName
+  pLatencyMode:
+    Type: String
+    Description: Latency Mode for IVS-Channel
+    Default: LOW
+  pQuality:
+    Type: String
+    Description: Quality of channel
+    Default: BASIC
+Outputs:
+  oVideoChannelArn:
+    Value: !Ref rIVSChannel
+  oVideoOutput:
+    Value: !GetAtt rIVSChannel.PlaybackUrl
+  oVideoInputURL:
+    Value: !GetAtt rIVSChannel.IngestEndpoint
+  oVideoInputKey:
+    Value: !GetAtt rStreamKey.Value
+
+Resources:
+  rIVSChannel:
+    Type: AWS::IVS::Channel
+    Properties:
+      Name: !Ref pProjectName
+      Type: !Ref pQuality
+      LatencyMode: !Ref pLatencyMode
+      Tags: 
+        - Key: "amplify-video"
+          Value: "amplify-video"
+
+  rStreamKey:
+    Type: AWS::IVS::StreamKey
+    Properties:
+      ChannelArn: !Ref rIVSChannel
+      Tags: 
+        - Key: "amplify-video"
+          Value: "amplify-video"

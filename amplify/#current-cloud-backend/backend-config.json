@@ -1,0 +1,9 @@
+{
+  "video": {
+    "ivsLive": {
+      "service": "video",
+      "serviceType": "ivs",
+      "providerPlugin": "awscloudformation"
+    }
+  }
+}
