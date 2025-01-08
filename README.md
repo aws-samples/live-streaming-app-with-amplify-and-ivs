@@ -185,10 +185,3 @@ To clean up resources, you will need to go to the root directory of your project
 
 ### Useful resources
 [EBS resize] (https://docs.aws.amazon.com/cloud9/latest/user-guide/move-environment.html#move-environment-resize)
-
-### Feedback
-
-Please give us the feedback on what you think of the project
-https://eventbox.dev/survey/TDRFNHD
-
-![Feedback](/src/images/qrcode.png)
